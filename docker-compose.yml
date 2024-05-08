@@ -1,31 +1,51 @@
 version: '3.5'
 services:
+  redis:
+    container_name: redis
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
 
-    redis:
-      container_name: redis
-      image: redis
-      restart: always
-      ports:
-        - "6379:6379"
-      volumes:
-        - redis-data:/data
+  db:
+    image: mysql:5.7
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "12345678"
+      MYSQL_DATABASE: chat
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-    migration:
-      build: .
-      command: bash -c "python manage.py makemigrations chat && python manage.py migrate"
-      volumes:
-        - .:/django_chat_room
+  migration:
+    build: .
+    command: bash -c "python manage.py makemigrations chat && python manage.py migrate"
+    volumes:
+      - .:/django_chat_room
+    depends_on:
+      - db
 
-    app:
-      build: .
-      command: bash -c "python manage.py runserver 0.0.0.0:8000"
-      restart: always
-      ports:
-        - "8000:8000"
-      volumes:
-        - .:/django_chat_room
-      depends_on:
-        - redis
+  app:
+    build: .
+    command: bash -c "python manage.py runserver 0.0.0.0:8000"
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/django_chat_room
+    depends_on:
+      - redis
+      - db
 
 volumes:
-    redis-data:
+  redis-data:
+  mysql_data:

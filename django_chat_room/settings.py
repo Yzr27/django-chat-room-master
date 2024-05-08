@@ -85,14 +85,13 @@ DATABASES = {
         'NAME': 'chat',
         'USER': 'root',
         'PASSWORD': '12345678',
-        'HOST': 'localhost',
+        'HOST': 'db',  # 确保这里与 docker-compose.yml 中的服务名称匹配
         'PORT': '3306',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES', character_set_connection=utf8mb4, collation_connection=utf8mb4_unicode_ci",
         },
     }
 }
-
 
 # channels settings
 ASGI_APPLICATION = "django_chat_room.asgi.application"
