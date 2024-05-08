@@ -88,6 +88,7 @@ DATABASES = {
         'HOST': 'db',  # 确保这里与 docker-compose.yml 中的服务名称匹配
         'PORT': '3306',
         'OPTIONS': {
+            'charset': 'utf8mb4',
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES', character_set_connection=utf8mb4, collation_connection=utf8mb4_unicode_ci",
         },
     }
@@ -127,7 +128,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
 
 TIME_ZONE = 'Asia/Taipei'
 

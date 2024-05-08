@@ -22,7 +22,8 @@
 
     $("#room-name-submit").click(function() {
       var room_name = $("#room-name-input").val();
-      window.location.pathname = '/chat/chat_' + room_name + '_{{ uid4 }}/';
+      window.location.pathname = '/chat/' + room_name + '/';
     });
+
 </script>
 {% endblock %}

@@ -32,28 +32,32 @@ class ChatConsumer(WebsocketConsumer):
 
     # Receive message from WebSocket
     def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message = text_data_json['message']
-        user = str(self.scope['user'])
-        now_time = datetime.datetime.now().strftime(settings.DATETIME_FORMAT)
+        try:
+            text_data_json = json.loads(text_data)
+            message = text_data_json['message']
+            user = str(self.scope['user'])
+            now_time = datetime.datetime.now().strftime(settings.DATETIME_FORMAT)
 
-        if not message:
-            return
-        if not self.scope['user'].is_authenticated:
-            return
+            if not message:
+                return
+            if not self.scope['user'].is_authenticated:
+                return
 
-        Message.objects.create(user=self.scope['user'], message=message, group_name=self.room_group_name)
+            Message.objects.create(user=self.scope['user'], message=message, group_name=self.room_group_name)
 
-        # Send message to room group
-        async_to_sync(self.channel_layer.group_send)(
-            self.room_group_name,
-            {
-                'type': 'chat_message',
-                'message': message,
-                'user': user,
-                'now_time': now_time
-            }
-        )
+            # Send message to room group
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    'type': 'chat_message',
+                    'message': message,
+                    'user': user,
+                    'now_time': now_time
+                }
+            )
+        except Exception as e:
+            print(f"Error processing message: {e}")
+            self.send(text_data=json.dumps({'error': str(e)}))
 
     # Receive message from room group
     def chat_message(self, event):

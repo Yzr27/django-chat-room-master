@@ -23,7 +23,7 @@
         <ul class="nav navbar-nav navbar-right">
 
             {% if request.user.is_authenticated %}
-                <li><a href="#"><span class="glyphicon glyphicon-user"></span> Hello {{ request.user }}</a>
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> 你好 {{ request.user }}</a>
                 </li>
                 <li><a href="{% url "logout" %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             {% else %}
