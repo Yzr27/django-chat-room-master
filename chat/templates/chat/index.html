@@ -1,29 +1,31 @@
-<!-- 允许用户输入并进入聊天室 -->
 {% extends "base.html" %}
 {% block title %}聊天室{% endblock %}
 {% block content %}
 <div class="form-group">
-    <label for="room-name-input">请输入你想进入的聊天室</label>
-    <input type="text" class="form-control" id="room-name-input">
+    <label for="room-name-input">请输入你想进入的聊天室名称</label>
+    <input type="text" class="form-control" id="room-name-input" placeholder="聊天室名称">
 </div>
-    <input id="room-name-submit" class="btn btn-success" type="button" value="Enter" />
+<input id="room-name-submit" class="btn btn-success" type="button" value="进入聊天室" />
 {% endblock %}
-
 
 {% block js %}
 <script>
+    // 聚焦到输入框
     $("#room-name-input").focus();
-    <!-- 允许用户通过按回车键来提交输入 -->
+    
+    // 允许用户通过按回车键来提交输入
     $("#room-name-input").keyup(function(e){
-      if (e.keyCode === 13) {  // enter, return
+        if (e.keyCode === 13) {  // Enter 键
             $("#room-name-submit").click();
         }
     });
 
+    // 处理点击事件，跳转到指定的聊天室
     $("#room-name-submit").click(function() {
-      var room_name = $("#room-name-input").val();
-      window.location.pathname = '/chat/' + room_name + '/';
+        var room_name = $("#room-name-input").val();
+        if (room_name) { // 确保输入非空
+            window.location.pathname = '/chat/' + encodeURIComponent(room_name) + '/';
+        }
     });
-
 </script>
 {% endblock %}

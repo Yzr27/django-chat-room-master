@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% load bootstrap3 %}
-{% block title %}Create an account{% endblock %}
+{% block title %}创建账户{% endblock %}
 {% block content %}
     <div class="jumbotron">
-        <h1>Sign up for Free</h1>
-        <p>create an account</p>
+        <h1>免费注册</h1>
+        <p>创建您的账户</p>
     </div>
 
     <form action="." method="post" class="form">
@@ -12,7 +12,7 @@
         {% bootstrap_form user_form %}
         {% buttons %}
             <button type="submit" class="btn btn-primary">
-                Create my account
+                创建我的账户
             </button>
         {% endbuttons %}
     </form>
